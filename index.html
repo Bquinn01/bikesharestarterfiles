@@ -1,21 +1,53 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Bike Share: Starter Files</title>
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.css' rel='stylesheet' />
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <div id='map'></div>
-    <script>
-      // REPLACE THE EMPTY ACCESS TOKEN WITH YOUR OWN TOKEN FROM MAP BOX
-      mapboxgl.accessToken = 'YOUR TOKEN HERE';
-      var map = new mapboxgl.Map({
-          container: 'map',
-          style: 'mapbox://styles/mapbox/streets-v9'
-      });
-    </script>
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <script src=tracking-min.js "" charset="utf-8"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <video id="myVideo" width="400" height="300" preload autoplay loop muted></video>
+  <img id= "theImage" src="http://placehold.it/400x400">
+  <script type="text/javascript">
+    let colors = new tracking.ColorTracker(['magenta','yellow'])
+    colors.on('track', function(event) {
+      if (event.data.length === 0) {
+        // No colors were detected in this frame.
+      } else {
+
+let yellow = 0;
+let magenta = 0;
+
+        event.data.forEach(function(rect) {
+          console.log(rect.x, rect.y, rect.height, rect.width, rect.color);
+          if (rect.color === "yellow"){
+            yellow = rect.x
+          }else{
+            magenta = rect.x
+          }
+
+          });
+          let distance = Math.abs(yellow - magenta)
+          console.log(distance)
+          let image = document.getElementById('theImage')
+          image.style.width = `${distance}px`;
+          image.style.height = `${distance}px`;
+
+          //image size changes depending on distance between hands, using color
+          //save location and color of hands
+          // compare distance between those two points
+          // affect image based on results
+//console.log("yellow x location:", yellow)
+//console.log("yellow x location:", magenta)
+      }
+    });
+    tracking.track('#myVideo', colors, {
+      camera: true
+    });
+  </script>
+</body>
+
 </html>
